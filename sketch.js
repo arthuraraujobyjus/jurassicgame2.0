@@ -11,6 +11,11 @@ var lang;
 var fury;
 var roads;
 var rocket;
+var vingadores;
+var sextetosinistro;
+var avantevingadores = 1;
+var eusouinevitavel = 0;
+var estado = avantevingadores;
 
 function preload(){
   horacioImagem = loadAnimation("trex1.png","trex3.png","trex4.png");
@@ -38,27 +43,41 @@ createCanvas(600,200);
   rocket=0;
   //var numero = Math.round(random(1,100));
   //console.log(numero);
+  vingadores = new Group();
+  sextetosinistro = new Group();
 }
 
 function draw(){
-background("#282828");
-//console.log(horacio.y);
+
+  background("#282828");
+  //console.log(horacio.y);
+
+if(estado === avantevingadores){
   osmusquitotapicando.velocityX = -2;
-if(osmusquitotapicando.x<0){
-  osmusquitotapicando.x = width/2;
-}
-
-if(keyDown("space")&&horacio.y>=150){
-  horacio.velocityY = -12;
-}
-
+  if(osmusquitotapicando.x<0){
+    osmusquitotapicando.x = width/2;
+  }
+  if(keyDown("space")&&horacio.y>=150){
+    horacio.velocityY = -12;
+  }
   horacio.velocityY = horacio.velocityY + 1;
-  horacio.collide(backiardigans);
   gerador();
   strange();
+  rocket+=Math.round(frameCount/60);
+if(sextetosinistro.isTouching(horacio)){
+  estado=eusouinevitavel;
+}
+
+} else if(estado === eusouinevitavel){
+  osmusquitotapicando.velocityX = 0;
+  vingadores.setVelocityXEach(0);
+  sextetosinistro.setVelocityXEach(0);
+}
+  horacio.collide(backiardigans);
+  
 drawSprites();
 text("pontos da tua vida="+rocket,450,50);
-rocket+=Math.round(frameCount/60);
+
 }
 
 function gerador(){
@@ -70,6 +89,7 @@ if(frameCount%60===0){
   parker.depth = horacio.depth;
   horacio.depth+=1;
   parker.lifetime = 300;
+  vingadores.add(parker);
 }}
 function strange(){
 if(frameCount%60===0){
@@ -94,6 +114,7 @@ if(frameCount%60===0){
   }
   doctor.scale=0.5;
   doctor.lifetime=300;
+  sextetosinistro.add(doctor);
 }
 }
 
