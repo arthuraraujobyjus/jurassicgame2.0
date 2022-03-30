@@ -22,6 +22,7 @@ var coringa,coringaimagen;
 var mario;
 var bos;
 var luig;
+var mensagem = "Isso é uma mensagem";
 
 function preload(){
   horacioImagem = loadAnimation("trex1.png","trex3.png","trex4.png");
@@ -65,12 +66,14 @@ createCanvas(600,200);
   coringa=createSprite(300,140);
   coringa.addImage(coringaimagen);
   coringa.scale=0.7;
+  
 }
 
 function draw(){
 
   background("#282828");
   //console.log(horacio.y);
+  //console.log(mensagem);
 
 if(estado === avantevingadores){
   charada.visible=false;
@@ -87,7 +90,7 @@ if(estado === avantevingadores){
   horacio.velocityY = horacio.velocityY + 1;
   gerador();
   strange();
-  rocket+=Math.round(frameCount/60);
+  rocket+=Math.round(frameRate()/60);
 if(sextetosinistro.isTouching(horacio)){
   estado=eusouinevitavel;
   bos.play();
@@ -109,11 +112,24 @@ if(rocket>0&&rocket%100===0){
   vingadores.setLifetimeEach(-1);
   sextetosinistro.setLifetimeEach(-1);
   horacio.velocityY=0;
+  if(mousePressedOver(coringa)){
+    goku();
+  }
 }
   horacio.collide(backiardigans);
+
   
 drawSprites();
 text("pontos da tua vida="+rocket,450,50);
+
+}
+
+function goku(){
+  estado=avantevingadores;
+  vingadores.destroyEach();
+  sextetosinistro.destroyEach();
+  horacio.changeAnimation("correndo",horacioImagem);
+  rocket=0;
 
 }
 
